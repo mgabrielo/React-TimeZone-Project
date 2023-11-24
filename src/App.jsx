@@ -179,7 +179,7 @@ function App() {
                         width: "90%",
                       }}
                     >
-                      {!timezoneAreaLoading ? (
+                      {!timezoneAreaLoading && timezoneArea ? (
                         expanded === index &&
                         item === timezoneArea?.timezone &&
                         timezoneArea?.datetime && (
