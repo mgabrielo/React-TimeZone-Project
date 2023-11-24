@@ -111,8 +111,8 @@ function App() {
 
   const formatDateTime = (value) => {
     const parsedDate = toDate(value.datetime);
-    const parisDate = utcToZonedTime(parsedDate, value.timezone);
-    const formattedDate = format(parisDate, "EEEE do MMMM yyyy, hh:mm a", {
+    const parsDate = utcToZonedTime(parsedDate, value.timezone);
+    const formattedDate = format(parsDate, "EEEE do MMMM yyyy, hh:mm a", {
       timeZone: value.timezone,
     });
     return formattedDate;
