@@ -77,9 +77,9 @@ function App() {
   return (
     <Container maxWidth="lg" className="App" sx={{ justifyContent: "center" }}>
       <Typography variant="h5" sx={{ padding: 2, color: "#4A148C" }}>
-        TimeZone Selection
+        Time Zone Selection
       </Typography>
-      <div className="mx-auto w-full rounded-2xl bg-white p-2">
+      <div className="mx-auto w-full rounded-2xl bg-purple-50 p-2">
         {allTImeZones && allTImeZones.length > 0 ? (
           allTImeZones.map((item, index) => (
             <Disclosure key={index}>
@@ -87,7 +87,7 @@ function App() {
                 <>
                   <Disclosure.Button
                     onClick={() => fetchArea(item)}
-                    className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
+                    className="flex w-full justify-between rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
                   >
                     <span>{item}</span>
                     <ChevronUpIcon
@@ -99,7 +99,7 @@ function App() {
                   {open &&
                     item === timezoneArea?.timezone &&
                     timezoneArea?.datetime && (
-                      <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                      <Disclosure.Panel className="px-4 pb-2 pt-4 text-md text-gray-700">
                         {formatDateTime(timezoneArea)}
                       </Disclosure.Panel>
                     )}
