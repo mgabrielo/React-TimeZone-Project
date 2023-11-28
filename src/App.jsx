@@ -15,7 +15,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { format, utcToZonedTime, toDate } from "date-fns-tz";
-
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
@@ -49,7 +48,7 @@ function App() {
 
   const fetchArea = async (areaValue) => {
     try {
-      if (areaValue !== undefined && areaValue.length > 3) {
+      if (areaValue !== undefined) {
         timezoneAreaStart();
         await axios
           .get(`https://worldtimeapi.org/api/timezone/${areaValue}`)
