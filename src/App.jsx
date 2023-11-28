@@ -16,8 +16,8 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { format, utcToZonedTime, toDate } from "date-fns-tz";
 import { Disclosure } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/20/solid";
-
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 function App() {
   const dispatch = useDispatch();
 
@@ -75,6 +75,11 @@ function App() {
     return formattedDate;
   };
 
+  const iconStyle = {
+    fontSize: 17,
+    color: "#9C27B0",
+  };
+
   return (
     <Container maxWidth="lg" className="App" sx={{ justifyContent: "center" }}>
       <Typography variant="h5" sx={{ padding: 2, color: "#4A148C" }}>
@@ -88,14 +93,14 @@ function App() {
                 <>
                   <Disclosure.Button
                     onClick={() => fetchArea(item)}
-                    className="flex w-full justify-between rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
+                    className="flex w-full justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
                   >
                     <span>{item}</span>
-                    <ChevronUpIcon
-                      className={`${
-                        open ? "rotate-180 transform" : ""
-                      } h-5 w-5 text-purple-500`}
-                    />
+                    {open && item === timezoneArea?.timezone ? (
+                      <RemoveIcon sx={iconStyle} />
+                    ) : (
+                      <AddIcon sx={iconStyle} />
+                    )}
                   </Disclosure.Button>
                   {open &&
                     item === timezoneArea?.timezone &&
