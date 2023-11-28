@@ -18,12 +18,17 @@ import { format, utcToZonedTime, toDate } from "date-fns-tz";
 import { Disclosure } from "@headlessui/react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+
 function App() {
   const dispatch = useDispatch();
 
-  const { allTImeZones, allTimeZonesLoading, timezoneArea } = useSelector(
-    (state) => state.timezone
-  );
+  const {
+    allTImeZones,
+    allTimeZonesLoading,
+    allTImeZonesError,
+    timezoneArea,
+    timezoneAreaError,
+  } = useSelector((state) => state.timezone);
 
   useEffect(() => {
     const fetchTImezone = async () => {
@@ -78,6 +83,22 @@ function App() {
   const iconStyle = {
     fontSize: 17,
     color: "#9C27B0",
+    display: "flex",
+  };
+
+  const fontStyle = {
+    color: "#4A148C",
+    fontWeight: 600,
+    fontSize: 18,
+  };
+
+  const loadingBox = {
+    display: "flex",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    marginY: 5,
   };
 
   return (
@@ -86,46 +107,55 @@ function App() {
         Time Zone Selection
       </Typography>
       <div className="mx-auto w-full rounded-2xl bg-purple-50 p-2">
-        {!allTimeZonesLoading && allTImeZones && allTImeZones.length > 0 ? (
-          allTImeZones.map((item, index) => (
-            <Disclosure key={index}>
-              {({ open }) => (
-                <>
-                  <Disclosure.Button
-                    onClick={() => fetchArea(item)}
-                    className="flex w-full justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
-                  >
-                    <span>{item}</span>
-                    {open && item === timezoneArea?.timezone ? (
-                      <RemoveIcon sx={iconStyle} />
+        {!allTimeZonesLoading ? (
+          !allTImeZonesError && allTImeZones.length > 0 ? (
+            allTImeZones.map((item, index) => (
+              <Disclosure key={index}>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button
+                      onClick={() => fetchArea(item)}
+                      className="flex w-full z-50 justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
+                    >
+                      <Typography>{item}</Typography>
+                      {item === timezoneArea?.timezone ? (
+                        <RemoveIcon
+                          data-headlessui-state="open"
+                          sx={iconStyle}
+                        />
+                      ) : (
+                        <AddIcon data-headlessui-state="open" sx={iconStyle} />
+                      )}
+                    </Disclosure.Button>
+                    {timezoneArea && !timezoneAreaError ? (
+                      timezoneArea?.timezone &&
+                      item === timezoneArea?.timezone &&
+                      timezoneArea?.datetime && (
+                        <Box
+                          data-headlessui-state="open"
+                          sx={{ paddingX: 4, paddingY: 4 }}
+                        >
+                          <Typography sx={fontStyle}>
+                            {formatDateTime(timezoneArea)}
+                          </Typography>
+                        </Box>
+                      )
                     ) : (
-                      <AddIcon sx={iconStyle} />
+                      <Typography sx={fontStyle}>
+                        {timezoneAreaError}
+                      </Typography>
                     )}
-                  </Disclosure.Button>
-                  {open &&
-                    item === timezoneArea?.timezone &&
-                    timezoneArea?.datetime && (
-                      <Disclosure.Panel className="px-4 pb-2 pt-4 text-md text-gray-700 font-semibold">
-                        {formatDateTime(timezoneArea)}
-                      </Disclosure.Panel>
-                    )}
-                </>
-              )}
-            </Disclosure>
-          ))
+                  </>
+                )}
+              </Disclosure>
+            ))
+          ) : (
+            <Typography sx={fontStyle}>{allTImeZonesError}</Typography>
+          )
         ) : (
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              marginY: 5,
-            }}
-          >
-            <CircularProgress disableShrink color="inherit" />
-            <Typography sx={{ mt: 4 }}>Loading...Please Wait</Typography>
+          <Box sx={loadingBox}>
+            <CircularProgress disableShrink sx={{ color: "#4A148C", mb: 4 }} />
+            <Typography sx={fontStyle}>Loading...Please Wait</Typography>
           </Box>
         )}
       </div>
