@@ -118,27 +118,24 @@ function App() {
                       className="flex w-full z-50 justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
                     >
                       <Typography>{item}</Typography>
-                      {item === timezoneArea?.timezone ? (
-                        <RemoveIcon
-                          data-headlessui-state="open"
-                          sx={iconStyle}
-                        />
+                      {open && item === timezoneArea?.timezone ? (
+                        <RemoveIcon sx={iconStyle} />
                       ) : (
-                        <AddIcon data-headlessui-state="open" sx={iconStyle} />
+                        <AddIcon sx={iconStyle} />
                       )}
                     </Disclosure.Button>
                     {timezoneArea && !timezoneAreaError ? (
-                      timezoneArea?.timezone &&
+                      open &&
                       item === timezoneArea?.timezone &&
                       timezoneArea?.datetime && (
-                        <Box
+                        <Disclosure.Panel
+                          className="px-4 py-4"
                           data-headlessui-state="open"
-                          sx={{ paddingX: 4, paddingY: 4 }}
                         >
                           <Typography sx={fontStyle}>
                             {formatDateTime(timezoneArea)}
                           </Typography>
-                        </Box>
+                        </Disclosure.Panel>
                       )
                     ) : (
                       <Typography sx={fontStyle}>
