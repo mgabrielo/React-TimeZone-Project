@@ -22,7 +22,9 @@ import { ChevronUpIcon } from "@heroicons/react/20/solid";
 function App() {
   const dispatch = useDispatch();
 
-  const { allTImeZones, timezoneArea } = useSelector((state) => state.timezone);
+  const { allTImeZones, allTimeZonesLoading, timezoneArea } = useSelector(
+    (state) => state.timezone
+  );
 
   useEffect(() => {
     const fetchTImezone = async () => {
@@ -80,7 +82,7 @@ function App() {
         Time Zone Selection
       </Typography>
       <div className="mx-auto w-full rounded-2xl bg-purple-50 p-2">
-        {allTImeZones && allTImeZones.length > 0 ? (
+        {!allTimeZonesLoading && allTImeZones && allTImeZones.length > 0 ? (
           allTImeZones.map((item, index) => (
             <Disclosure key={index}>
               {({ open }) => (
