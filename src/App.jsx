@@ -105,7 +105,7 @@ function App() {
                   {open &&
                     item === timezoneArea?.timezone &&
                     timezoneArea?.datetime && (
-                      <Disclosure.Panel className="px-4 pb-2 pt-4 text-md text-gray-700">
+                      <Disclosure.Panel className="px-4 pb-2 pt-4 text-md text-gray-700 font-semibold">
                         {formatDateTime(timezoneArea)}
                       </Disclosure.Panel>
                     )}
