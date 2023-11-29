@@ -122,7 +122,15 @@ function App() {
                             onMouseOver={() =>
                               item !== timezoneArea?.timezone && close()
                             }
-                            onClick={() => fetchArea(item)}
+                            value={item}
+                            onClick={(e) => {
+                              if (e.target !== e.currentTarget) {
+                                close();
+                                return;
+                              } else {
+                                fetchArea(e.target.value);
+                              }
+                            }}
                             className="flex w-full z-50 justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none"
                           >
                             <Typography>{item}</Typography>
