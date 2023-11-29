@@ -110,61 +110,66 @@ function App() {
       <div className="mx-auto w-full rounded-2xl bg-purple-50 p-2">
         {!allTimeZonesLoading ? (
           !allTImeZonesError ? (
-            allTImeZones.length > 0 &&
-            allTImeZones.map((item, index) => {
-              if (item) {
-                return (
-                  <Disclosure key={index}>
-                    {({ open, close }) => (
-                      <>
-                        <Disclosure.Button
-                          as="button"
-                          onMouseOver={() =>
-                            item !== timezoneArea?.timezone && close()
-                          }
-                          onClick={() => fetchArea(item)}
-                          className="flex w-full z-50 justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none"
-                        >
-                          <Typography>{item}</Typography>
-                          {timezoneArea?.timezone &&
-                          open &&
-                          item === timezoneArea?.timezone ? (
-                            <RemoveIcon sx={iconStyle} />
+            allTImeZones.length > 0 ? (
+              allTImeZones.map((item, index) => {
+                if (item) {
+                  return (
+                    <Disclosure key={index}>
+                      {({ open, close }) => (
+                        <>
+                          <Disclosure.Button
+                            as="button"
+                            onMouseOver={() =>
+                              item !== timezoneArea?.timezone && close()
+                            }
+                            onClick={() => fetchArea(item)}
+                            className="flex w-full z-50 justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none"
+                          >
+                            <Typography>{item}</Typography>
+                            {timezoneArea?.timezone &&
+                            open &&
+                            item === timezoneArea?.timezone ? (
+                              <RemoveIcon sx={iconStyle} />
+                            ) : (
+                              <AddIcon sx={iconStyle} />
+                            )}
+                          </Disclosure.Button>
+                          {!timezoneAreaLoading && !timezoneAreaError ? (
+                            timezoneArea &&
+                            timezoneArea?.timezone &&
+                            item === timezoneArea?.timezone &&
+                            timezoneArea?.datetime && (
+                              <Transition
+                                show={open}
+                                enter="transition duration-100 ease-out"
+                                enterFrom="transform scale-95 opacity-0"
+                                enterTo="transform scale-100 opacity-100"
+                                leave="transition duration-75 ease-out"
+                                leaveFrom="transform scale-100 opacity-100"
+                                leaveTo="transform scale-95 opacity-0"
+                              >
+                                <Disclosure.Panel static className="px-4 py-4">
+                                  <Typography sx={fontStyle}>
+                                    {formatDateTime(timezoneArea)}
+                                  </Typography>
+                                </Disclosure.Panel>
+                              </Transition>
+                            )
                           ) : (
-                            <AddIcon sx={iconStyle} />
+                            <Typography sx={fontStyle}>
+                              {timezoneAreaError}
+                            </Typography>
                           )}
-                        </Disclosure.Button>
-                        {!timezoneAreaLoading && !timezoneAreaError ? (
-                          item === timezoneArea?.timezone &&
-                          timezoneArea?.datetime && (
-                            <Transition
-                              show={open}
-                              enter="transition duration-100 ease-out"
-                              enterFrom="transform scale-95 opacity-0"
-                              enterTo="transform scale-100 opacity-100"
-                              leave="transition duration-75 ease-out"
-                              leaveFrom="transform scale-100 opacity-100"
-                              leaveTo="transform scale-95 opacity-0"
-                            >
-                              <Disclosure.Panel static className="px-4 py-4">
-                                <Typography sx={fontStyle}>
-                                  {formatDateTime(timezoneArea)}
-                                </Typography>
-                              </Disclosure.Panel>
-                            </Transition>
-                          )
-                        ) : (
-                          <Typography sx={fontStyle}>
-                            {timezoneAreaError}
-                          </Typography>
-                        )}
-                      </>
-                    )}
-                  </Disclosure>
-                );
-              }
-              return null;
-            })
+                        </>
+                      )}
+                    </Disclosure>
+                  );
+                }
+                return null;
+              })
+            ) : (
+              <Typography sx={fontStyle}>No Data Available</Typography>
+            )
           ) : (
             <Typography sx={fontStyle}>{allTImeZonesError}</Typography>
           )
