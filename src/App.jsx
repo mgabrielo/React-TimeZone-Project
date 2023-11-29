@@ -15,7 +15,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 import { format, utcToZonedTime, toDate } from "date-fns-tz";
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, Transition } from "@headlessui/react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
@@ -52,15 +52,15 @@ function App() {
     fetchTImezone();
   }, [dispatch]);
 
-  const fetchArea = async (areaValue) => {
+  const fetchArea = async (value) => {
     try {
-      if (areaValue !== undefined) {
+      if (value !== null) {
         timezoneAreaStart();
         await axios
-          .get(`https://worldtimeapi.org/api/timezone/${areaValue}`)
+          .get(`https://worldtimeapi.org/api/timezone/${value}`)
           .then((response) => {
-            if (response.status === 200 && response.data !== undefined) {
-              dispatch(timezoneAreaSuccess(response?.data));
+            if (response.status === 200 && response.data) {
+              dispatch(timezoneAreaSuccess(response.data));
             }
           })
           .catch((err) => {
@@ -110,42 +110,60 @@ function App() {
       <div className="mx-auto w-full rounded-2xl bg-purple-50 p-2">
         {!allTimeZonesLoading ? (
           !allTImeZonesError && allTImeZones.length > 0 ? (
-            allTImeZones.map((item, index) => (
-              <Disclosure key={index}>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button
-                      onClick={() => fetchArea(item)}
-                      className="flex w-full z-50 justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
-                    >
-                      <Typography>{item}</Typography>
-                      {open && item === timezoneArea?.timezone ? (
-                        <RemoveIcon sx={iconStyle} />
-                      ) : (
-                        <AddIcon sx={iconStyle} />
-                      )}
-                    </Disclosure.Button>
-                    {!timezoneAreaLoading &&
-                    timezoneArea &&
-                    !timezoneAreaError ? (
-                      open &&
-                      item === timezoneArea?.timezone &&
-                      timezoneArea?.datetime && (
-                        <Disclosure.Panel className="px-4 py-4">
+            allTImeZones.map((item, index) => {
+              if (item) {
+                return (
+                  <Disclosure key={index}>
+                    {({ open, close }) => (
+                      <>
+                        <Disclosure.Button
+                          as="button"
+                          onMouseOver={() =>
+                            item !== timezoneArea?.timezone && close()
+                          }
+                          onClick={() => fetchArea(item)}
+                          className="flex w-full z-50 justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75"
+                        >
+                          <Typography>{item}</Typography>
+                          {timezoneArea?.timezone &&
+                          open &&
+                          item === timezoneArea?.timezone ? (
+                            <RemoveIcon sx={iconStyle} />
+                          ) : (
+                            <AddIcon sx={iconStyle} />
+                          )}
+                        </Disclosure.Button>
+                        {!timezoneAreaLoading && !timezoneAreaError ? (
+                          item === timezoneArea?.timezone &&
+                          timezoneArea?.datetime && (
+                            <Transition
+                              show={open}
+                              enter="transition duration-100 ease-out"
+                              enterFrom="transform scale-95 opacity-0"
+                              enterTo="transform scale-100 opacity-100"
+                              leave="transition duration-75 ease-out"
+                              leaveFrom="transform scale-100 opacity-100"
+                              leaveTo="transform scale-95 opacity-0"
+                            >
+                              <Disclosure.Panel static className="px-4 py-4">
+                                <Typography sx={fontStyle}>
+                                  {formatDateTime(timezoneArea)}
+                                </Typography>
+                              </Disclosure.Panel>
+                            </Transition>
+                          )
+                        ) : (
                           <Typography sx={fontStyle}>
-                            {formatDateTime(timezoneArea)}
+                            {timezoneAreaError}
                           </Typography>
-                        </Disclosure.Panel>
-                      )
-                    ) : (
-                      <Typography sx={fontStyle}>
-                        {timezoneAreaError}
-                      </Typography>
+                        )}
+                      </>
                     )}
-                  </>
-                )}
-              </Disclosure>
-            ))
+                  </Disclosure>
+                );
+              }
+              return null;
+            })
           ) : (
             <Typography sx={fontStyle}>{allTImeZonesError}</Typography>
           )
