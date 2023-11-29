@@ -59,7 +59,7 @@ function App() {
         await axios
           .get(`https://worldtimeapi.org/api/timezone/${value}`)
           .then((response) => {
-            if (response.status === 200 && response.data) {
+            if (response.status === 200 && response?.data !== null) {
               dispatch(timezoneAreaSuccess(response.data));
             }
           })
