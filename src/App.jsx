@@ -27,6 +27,7 @@ function App() {
     allTimeZonesLoading,
     allTImeZonesError,
     timezoneArea,
+    timezoneAreaLoading,
     timezoneAreaError,
   } = useSelector((state) => state.timezone);
 
@@ -124,14 +125,13 @@ function App() {
                         <AddIcon sx={iconStyle} />
                       )}
                     </Disclosure.Button>
-                    {timezoneArea && !timezoneAreaError ? (
+                    {!timezoneAreaLoading &&
+                    timezoneArea &&
+                    !timezoneAreaError ? (
                       open &&
                       item === timezoneArea?.timezone &&
                       timezoneArea?.datetime && (
-                        <Disclosure.Panel
-                          className="px-4 py-4"
-                          data-headlessui-state="open"
-                        >
+                        <Disclosure.Panel className="px-4 py-4">
                           <Typography sx={fontStyle}>
                             {formatDateTime(timezoneArea)}
                           </Typography>
