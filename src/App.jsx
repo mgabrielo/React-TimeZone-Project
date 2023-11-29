@@ -109,7 +109,8 @@ function App() {
       </Typography>
       <div className="mx-auto w-full rounded-2xl bg-purple-50 p-2">
         {!allTimeZonesLoading ? (
-          !allTImeZonesError && allTImeZones.length > 0 ? (
+          !allTImeZonesError ? (
+            allTImeZones.length > 0 &&
             allTImeZones.map((item, index) => {
               if (item) {
                 return (
