@@ -21,7 +21,6 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 function App() {
   const dispatch = useDispatch();
-
   const {
     allTImeZones,
     allTimeZonesLoading,
@@ -39,7 +38,8 @@ function App() {
           .get("https://worldtimeapi.org/api/timezone")
           .then((response) => {
             if (response?.data !== null) {
-              dispatch(allTImeZonesSuccess(response?.data));
+              const result = response?.data;
+              dispatch(allTImeZonesSuccess(result));
             }
           })
           .catch((err) => {
@@ -66,6 +66,8 @@ function App() {
           .catch((err) => {
             dispatch(timezoneAreaFailure(err?.message));
           });
+      } else {
+        dispatch(timezoneAreaSuccess(null));
       }
     } catch (error) {
       console.log(error);
@@ -133,13 +135,20 @@ function App() {
                             }}
                             className="flex w-full z-50 justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none"
                           >
-                            <Typography>{item}</Typography>
+                            {item}
+
                             {timezoneArea?.timezone &&
                             open &&
                             item === timezoneArea?.timezone ? (
-                              <RemoveIcon sx={iconStyle} />
+                              <RemoveIcon
+                                sx={iconStyle}
+                                onClick={() => fetchArea(null)}
+                              />
                             ) : (
-                              <AddIcon sx={iconStyle} />
+                              <AddIcon
+                                sx={iconStyle}
+                                onClick={() => fetchArea(item)}
+                              />
                             )}
                           </Disclosure.Button>
                           {!timezoneAreaLoading && !timezoneAreaError ? (
