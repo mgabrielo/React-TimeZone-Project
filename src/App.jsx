@@ -133,7 +133,7 @@ function App() {
                                 fetchArea(e.target.value);
                               }
                             }}
-                            className="flex w-full z-50 justify-between items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none"
+                            className="flex w-full z-50 justify-between cursor-default items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none"
                           >
                             {item}
 
