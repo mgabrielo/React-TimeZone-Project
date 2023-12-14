@@ -54,7 +54,7 @@ function App() {
 
   const fetchArea = async (value) => {
     try {
-      if (value !== null) {
+      if (value !== null && value !== undefined) {
         timezoneAreaStart();
         await axios
           .get(`https://worldtimeapi.org/api/timezone/${value}`)
