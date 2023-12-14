@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import {
@@ -29,7 +29,7 @@ function App() {
     timezoneAreaLoading,
     timezoneAreaError,
   } = useSelector((state) => state.timezone);
-
+  const [onPressBtn, setOnPressBtn] = useState(0);
   useEffect(() => {
     const fetchTImezone = async () => {
       try {
@@ -126,11 +126,15 @@ function App() {
                             }
                             value={item}
                             onClick={(e) => {
-                              if (e.target !== e.currentTarget) {
-                                close();
-                                return;
-                              } else {
+                              if (
+                                onPressBtn === 0 ||
+                                item !== timezoneArea?.timezone
+                              ) {
+                                setOnPressBtn((prev) => prev + 1);
                                 fetchArea(e.target.value);
+                              } else {
+                                fetchArea(null);
+                                setOnPressBtn((prev) => prev - 1);
                               }
                             }}
                             className="flex w-full z-50 justify-between cursor-default items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none"
