@@ -130,8 +130,8 @@ function App() {
                                 onPressBtn === 0 ||
                                 item !== timezoneArea?.timezone
                               ) {
-                                setOnPressBtn((prev) => prev + 1);
                                 fetchArea(e.target.value);
+                                setOnPressBtn((prev) => prev + 1);
                               } else {
                                 fetchArea(null);
                                 setOnPressBtn((prev) => prev - 1);
