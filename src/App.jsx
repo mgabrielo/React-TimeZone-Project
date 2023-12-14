@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import {
@@ -21,6 +21,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 function App() {
   const dispatch = useDispatch();
+  const [onPressBtn, setOnPressBtn] = useState(0);
   const {
     allTImeZones,
     allTimeZonesLoading,
@@ -130,7 +131,16 @@ function App() {
                                 close();
                                 return;
                               } else {
-                                fetchArea(e.target.value);
+                                if (
+                                  onPressBtn === 0 &&
+                                  item !== timezoneArea?.timezone
+                                ) {
+                                  fetchArea(e.target.value);
+                                  setOnPressBtn((prev) => prev + 1);
+                                } else {
+                                  fetchArea(null);
+                                  setOnPressBtn((prev) => prev - 1);
+                                }
                               }
                             }}
                             className="flex w-full z-50 justify-between cursor-default items-center rounded-lg mb-1 bg-purple-100 px-4 py-2 text-left text-md font-medium text-purple-900 hover:bg-purple-200 focus:outline-none"
